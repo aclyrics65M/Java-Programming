@@ -19,7 +19,8 @@ public class NumbersLinkedList extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setScene(new Scene(new NumberLinkedListPane()));
-		
+		primaryStage.setTitle("Storing Numbers in a Linked List");
+		primaryStage.show();
 	}
 	
 	/** Private class NumberLinkedListPane */
