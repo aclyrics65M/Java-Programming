@@ -1,0 +1,155 @@
+/* Calculator Simulation
+*/
+
+/* Import statements */
+import java.util.*;
+import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.Container;
+
+public class CalculatorSimulation implements ActionListener {
+
+    /* Data Fields */
+    private JFrame javaGuiFrame;
+    private JPanel javaButtonPanel;
+    private JTextField numberCalculator;
+    private int calculatorOperation = 0;
+    private int currentCalculator;
+
+    public static void main(String[] args) {
+
+        //System.out.println("Welcome to Calculator Simulation Project");
+        //System.out.println("Displaying Graphical Calculator");
+
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new CalculatorSimulation();
+            }
+        });
+
+    }
+
+    /* CalculatorSimulation constructor */
+    public CalculatorSimulation() {
+
+        javaGuiFrame = new JFrame();
+        javaGuiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        javaGuiFrame.setTitle("Java Graphical Calculator");
+
+        javaGuiFrame.setSize(400, 400);
+        javaGuiFrame.setLocationRelativeTo(null);
+
+        numberCalculator = new JTextField();
+        numberCalculator.setHorizontalAlignment(JTextField.RIGHT);
+        numberCalculator.setEditable(false);
+
+        javaGuiFrame.add(numberCalculator, BorderLayout.NORTH);
+
+        javaButtonPanel = new JPanel();
+        javaButtonPanel.setLayout(new GridLayout(4, 4));
+
+        javaGuiFrame.add(javaButtonPanel, BorderLayout.CENTER);
+
+        for(int index = 0; index < 10; index++) {
+            insertNumberButton(javaButtonPanel, String.valueOf(index));
+        }
+
+        insertActionButton(javaButtonPanel, 1, "+");
+        insertActionButton(javaButtonPanel, 2, "-");
+        insertActionButton(javaButtonPanel, 3, "*");
+        insertActionButton(javaButtonPanel, 4, "/");
+        insertActionButton(javaButtonPanel, 5, "^2");
+
+        JButton javaEqualsButton = new JButton("=");
+
+        javaEqualsButton.setActionCommand("=");
+        javaEqualsButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(!numberCalculator.getText().isEmpty()) {
+
+                    int numberInput = Integer.parseInt(numberCalculator.getText());
+
+                    if(calculatorOperation == 1) {
+                        int calculation = currentCalculator + numberInput;
+                        numberCalculator.setText(Integer.toString(calculation));
+
+                    } else if (calculatorOperation == 2) {
+                        int calculate = currentCalculator  - numberInput;
+                        numberCalculator.setText(Integer.toString(calculate));
+
+                    } else if (calculatorOperation == 3) {
+                        int calculate = currentCalculator  * numberInput;
+                        numberCalculator.setText(Integer.toString(calculate));
+
+                    } else if (calculatorOperation == 4) {
+                        int calculate = currentCalculator  / numberInput;
+                        numberCalculator.setText(Integer.toString(calculate));
+
+                    } else if (calculatorOperation == 5) {
+                        int calculate = currentCalculator  * currentCalculator;
+                        numberCalculator.setText(Integer.toString(calculate));
+                    }
+
+                }
+
+            }
+        });
+
+        javaButtonPanel.add(javaEqualsButton);
+        javaGuiFrame.setVisible(true);
+    }
+
+    /* Method actionPerformed */
+    public void actionPerformed(ActionEvent javaEvent) {
+        String javaAction = javaEvent.getActionCommand();
+        numberCalculator.setText(javaAction);
+    }
+
+    /* Method insertActionButton */
+    private void insertActionButton(Container parentContainer, int actionNumber, String text) {
+        JButton javaButton = new JButton(text);
+        javaButton.setActionCommand(text);
+        OperatorAction addJavaAction = new OperatorAction(actionNumber);
+        javaButton.addActionListener(addJavaAction);
+        parentContainer.add(javaButton);
+    }
+
+    /* Method insertNumberButton */
+    private void insertNumberButton(Container parentContainer, String name) {
+
+        JButton javaButton = new JButton(name);
+        javaButton.setActionCommand(name);
+        javaButton.addActionListener(this);
+        parentContainer.add(javaButton);
+
+    }
+
+    /* Class OperatorAction */
+    private class OperatorAction implements ActionListener {
+
+        /* Data Fields */
+        private int javaOperator;
+
+        public OperatorAction(int javaOperation) {
+            this.javaOperator = javaOperation;
+        }
+
+        public void actionPerformed(ActionEvent event) {
+            currentCalculator = Integer.parseInt(numberCalculator.getText());
+            calculatorOperation = javaOperator;
+        }
+
+
+    }
+
+}
